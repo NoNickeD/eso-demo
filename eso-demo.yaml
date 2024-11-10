@@ -1,0 +1,22 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: eso-demo-secret
+  namespace: external-secrets
+spec:
+  refreshInterval: "1m" # Optional, how frequently to refresh
+  secretStoreRef:
+    name: aws-secrets-manager
+    kind: SecretStore
+  target:
+    name: eso-secret
+    creationPolicy: Owner
+  data:
+    - secretKey: DB_USER # Target key in Kubernetes Secret
+      remoteRef:
+        key: eso-demo # AWS Secret name
+        property: DB_USER # AWS Secret property
+    - secretKey: DB_PASSWORD
+      remoteRef:
+        key: eso-demo
+        property: DB_PASSWORD
